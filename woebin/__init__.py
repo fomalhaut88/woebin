@@ -80,8 +80,6 @@ class WoeBinningProc:
         return bins_info_list
 
     def get_woe_map(self):
-        assert self.is_done()
-
         woe_map = {}
 
         for info in self.get_bins_info():
@@ -89,6 +87,12 @@ class WoeBinningProc:
                 woe_map[value] = info['woe']
 
         return woe_map
+
+    def get_iv_total(self):
+        iv_total = 0.0
+        for info in self.get_bins_info():
+            iv_total += info['iv']
+        return iv_total
 
 
 class BinInfo(ctypes.Structure):
