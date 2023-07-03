@@ -19,7 +19,5 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     install_requires=[],
-    # package_dir={"": "target/release"},
-    # package_data={'dlls': ['target/release/woebin.dll']},
     data_files=[('dlls', ['target/release/woebin.dll'])],
 )

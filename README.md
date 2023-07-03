@@ -40,8 +40,7 @@ print(woe_map)
 1. Make sure Rust nightly is installed.
 2. Clone the repository: `git clone --depth=1 https://github.com/fomalhaut88/woebin.git`
 3. Go to `woebin` directory: `cd woebin`
-4. Build the project: `cargo build --release`
-5. Build Python package: `python setup.py sdist`
+4. Build the project: `python setup.py sdist`
 
 After that the package can be installed with the command:
 
