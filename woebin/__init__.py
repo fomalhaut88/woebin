@@ -1,7 +1,18 @@
+import sys
+import os
 import ctypes
 
+import sys
+import os
 
-dll = ctypes.CDLL("./target/release/woebin.dll")
+
+dll_path = os.path.join(sys.prefix, 'dlls', 'woebin.dll')
+
+if not os.path.exists(dll_path):
+    dll_path = "./target/release/woebin.dll"
+
+
+dll = ctypes.CDLL(dll_path)
 
 dll.wbp_new.restype = ctypes.c_void_p
 

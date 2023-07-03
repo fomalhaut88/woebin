@@ -4,3 +4,7 @@ __pycache__
 
 /target
 /Cargo.lock
+
+/build/
+/dist/
+/*.egg-info/
