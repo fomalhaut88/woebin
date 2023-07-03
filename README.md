@@ -8,7 +8,7 @@ A python library powered by Rust to perform binning procedure based on WOE.
 pip install woebin-python
 ```
 
-**NOTE**: It works for Windows 11 only.
+**NOTE**: It works for Windows 11 only. If you want to use it for another platform, please, see below how to build it from source.
 
 ## Simple example
 
