@@ -37,7 +37,7 @@ print(woe_map)
 
 ## Build and install from source
 
-1. Make sure Rust nightly is installed.
+1. Make sure Rust nightly is installed (Installation: https://www.rust-lang.org/tools/install, turn on nightly mode: `rustup default nightly`).
 2. Clone the repository: `git clone --depth=1 https://github.com/fomalhaut88/woebin.git`
 3. Go to `woebin` directory: `cd woebin`
 4. Build the project: `python setup.py sdist`
