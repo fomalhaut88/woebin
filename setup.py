@@ -12,7 +12,7 @@ with open('README.md') as f:
 
 setup(
     name='woebin-python',
-    version='0.1.1',
+    version='0.1.3',
     packages=find_packages(),
     license="MIT",
     description="",

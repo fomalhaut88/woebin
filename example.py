@@ -26,8 +26,13 @@ def create_dataset(size, cat_num, is_sorted=False):
         np.random.random(size) < np.vectorize(prob_map.__getitem__)(cat)
     ).astype(int)
 
-    # Final dataset as pandas dataframe
-    return pd.DataFrame({'series': cat, 'target': trg})
+    # Dataset as pandas dataframe
+    df = pd.DataFrame({'series': cat, 'target': trg})
+
+    # Add series as string
+    df['series_str'] = df['series'].map(str)
+
+    return df
 
 
 def example():
@@ -41,7 +46,7 @@ def example():
 
     wbp = WoeBinningProc(desirable_bins_num)
 
-    wbp.process_categorial(df['series'], df['target'])
+    wbp.process_categorial(df['series_str'], df['target'])
 
     # bins_info = wbp.get_bins_info()
     # print(bins_info)

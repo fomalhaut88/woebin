@@ -6,10 +6,22 @@ import sys
 import os
 
 
-dll_path = os.path.join(sys.prefix, 'dlls', 'woebin.dll')
+dll_name = None
+
+if sys.platform == "linux" or sys.platform == "linux2":
+    dll_name = 'woebin.so'
+elif sys.platform == "darwin":
+    dll_name = 'woebin.dylib'
+elif sys.platform == "win32":
+    dll_name = 'woebin.dll'
+
+assert dll_name is not None, f"OS not supported: {sys.platform}"
+
+
+dll_path = os.path.join(sys.prefix, 'dlls', dll_name)
 
 if not os.path.exists(dll_path):
-    dll_path = "./target/release/woebin.dll"
+    dll_path = os.path.join('./target/release', dll_name)
 
 
 dll = ctypes.CDLL(dll_path)
@@ -33,6 +45,9 @@ class WoeBinningProc:
         assert len(series) == len(target)
         size = len(series)
 
+        series = map(hash, series)
+        target = map(bool, target)
+
         dll.wbp_process_categorial.argtypes = [
             ctypes.c_void_p, ctypes.c_uint64, 
             (ctypes.c_uint64 * size), (ctypes.c_bool * size)
@@ -47,6 +62,9 @@ class WoeBinningProc:
     def process_numeric(self, series, target):
         assert len(series) == len(target)
         size = len(series)
+
+        series = map(strict_float_to_int, series)
+        target = map(bool, target)
 
         dll.wbp_process_numeric.argtypes = [
             ctypes.c_void_p, ctypes.c_uint64, 
@@ -104,6 +122,16 @@ class WoeBinningProc:
         for info in self.get_bins_info():
             iv_total += info['iv']
         return iv_total
+
+
+def strict_float_to_int(x):
+    if isinstance(x, float):
+        if float(x).is_integer():
+            return int(x)
+        else:
+            raise TypeError(x)
+    else:
+        return int(x)
 
 
 class BinInfo(ctypes.Structure):
