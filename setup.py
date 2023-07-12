@@ -10,7 +10,7 @@ dll_name = None
 if sys.platform == "linux" or sys.platform == "linux2":
     dll_name = 'libwoebin.so'
 elif sys.platform == "darwin":
-    dll_name = 'woebin.dylib'
+    dll_name = 'libwoebin.dylib'
 elif sys.platform == "win32":
     dll_name = 'woebin.dll'
 
@@ -28,7 +28,7 @@ with open('README.md') as f:
 
 setup(
     name='woebin-python',
-    version='0.1.5',
+    version='0.1.6',
     packages=find_packages(),
     license="MIT",
     description="",
