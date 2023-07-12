@@ -9,7 +9,7 @@ import os
 dll_name = None
 
 if sys.platform == "linux" or sys.platform == "linux2":
-    dll_name = 'woebin.so'
+    dll_name = 'libwoebin.so'
 elif sys.platform == "darwin":
     dll_name = 'woebin.dylib'
 elif sys.platform == "win32":

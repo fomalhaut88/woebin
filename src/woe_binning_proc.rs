@@ -157,7 +157,7 @@ impl WoeBinningProc {
                 );
             }
 
-            let mut cluster = stat.get_mut(&value).unwrap();
+            let cluster = stat.get_mut(&value).unwrap();
             cluster.n += 1;
             if target[idx] {
                 cluster.n1 += 1;
