@@ -21,11 +21,15 @@ struct WoeBinningCluster {
     p1: f64,
     p0: f64,
     values: Vec<usize>,
+    smooth: f64,
 }
 
 
 impl ClusterTrait for WoeBinningCluster {
     fn merge(cluster1: &Self, cluster2: &Self) -> Self {
+        let smooth = (cluster1.n as f64 * cluster1.smooth + 
+                      cluster2.n as f64 * cluster2.smooth) / 
+                     (cluster1.n + cluster2.n) as f64;
         Self {
             n: cluster1.n + cluster2.n,
             n1: cluster1.n1 + cluster2.n1,
@@ -33,15 +37,23 @@ impl ClusterTrait for WoeBinningCluster {
             p1: cluster1.p1 + cluster2.p1,
             p0: cluster1.p0 + cluster2.p0,
             values: [cluster1.values.clone(), cluster2.values.clone()].concat(),
+            smooth,
         }
     }
 
     fn distance(cluster1: &Self, cluster2: &Self) -> Option<f64> {
-        Some(
-            calc_iv(cluster1.p0, cluster1.p1) + 
-            calc_iv(cluster2.p0, cluster2.p1) - 
-            calc_iv(cluster1.p0 + cluster2.p0, cluster1.p1 + cluster2.p1)
-        )
+        let smooth = (cluster1.n as f64 * cluster1.smooth + 
+                      cluster2.n as f64 * cluster2.smooth) / 
+                     (cluster1.n + cluster2.n) as f64;
+
+        let d_iv = calc_iv(cluster1.p0, cluster1.p1) + 
+                   calc_iv(cluster2.p0, cluster2.p1) - 
+                   calc_iv(cluster1.p0 + cluster2.p0, 
+                           cluster1.p1 + cluster2.p1);
+
+        let factor = (cluster1.n * cluster2.n) as f64;
+
+        Some(d_iv * factor.powf(smooth))
     }
 }
 
@@ -50,15 +62,17 @@ pub struct WoeBinningProc {
     clusterizer: HierarchicalClusterizer<WoeBinningCluster>,
     desirable_bins_num: usize,
     clusters: Option<Vec<WoeBinningCluster>>,
+    smooth: f64,
 }
 
 
 impl WoeBinningProc {
-    pub fn new(desirable_bins_num: usize) -> Self {
+    pub fn new(desirable_bins_num: usize, smooth: f64) -> Self {
         Self {
             clusterizer: HierarchicalClusterizer::<WoeBinningCluster>::new(),
             desirable_bins_num,
             clusters: None,
+            smooth,
         }
     }
 
@@ -153,6 +167,7 @@ impl WoeBinningProc {
                         p1: 0.0,
                         p0: 0.0,
                         values: vec![value],
+                        smooth: self.smooth,
                     }
                 );
             }

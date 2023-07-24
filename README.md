@@ -15,13 +15,13 @@ pip install woebin-python
 ```python
 from woebin import WoeBinningProc
 
-wbp = WoeBinningProc(5)
+wbp = WoeBinningProc()
 
 # Process categorial binning
-wbp.process_categorial(df['series'], df['target'])  # series as integers, target as 0-1 or boolean
+wbp.process(df['series'], df['target'], bins=5, is_numeric=False, smooth=1.0)  # series as integers, target as 0-1 or boolean
 
 # Process numeric binning (values in series are considered as numeric)
-#wbp.process_numeric(df['series'], df['target'])
+wbp.process(df['series'], df['target'], bins=5, is_numeric=True, smooth=1.0)
 
 # Final IV
 print(wbp.get_iv_total())

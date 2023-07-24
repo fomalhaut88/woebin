@@ -17,9 +17,9 @@ struct WoeBinningProcWrapper {
 impl WoeBinningProcWrapper {
     #[no_mangle]
     #[export_name="wbp_new"]
-    pub extern fn new(desirable_bins_num: usize) -> Box<Self> {
+    pub extern fn new(desirable_bins_num: usize, smooth: f64) -> Box<Self> {
         Box::new(Self {
-            wbp: WoeBinningProc::new(desirable_bins_num)
+            wbp: WoeBinningProc::new(desirable_bins_num, smooth)
         })
     }
 

@@ -37,16 +37,15 @@ def create_dataset(size, cat_num, is_sorted=False):
 
 def example():
     size = 1_000_000
-    desirable_bins_num = 5
 
     df = create_dataset(size, 1000, is_sorted=True)
     print(df)
 
     print("Process categorial")
 
-    wbp = WoeBinningProc(desirable_bins_num)
+    wbp = WoeBinningProc()
 
-    wbp.process_categorial(df['series_str'], df['target'])
+    wbp.process(df['series_str'], df['target'], bins=5, is_numeric=False, smooth=1.0)
 
     # bins_info = wbp.get_bins_info()
     # print(bins_info)
@@ -58,15 +57,13 @@ def example():
 
     print("Process numeric")
 
-    wbp = WoeBinningProc(desirable_bins_num)
-
-    wbp.process_numeric(df['series'], df['target'])
+    wbp.process(df['series'], df['target'], bins=5, is_numeric=True, smooth=1.0)
 
     # bins_info = wbp.get_bins_info()
     # print(bins_info)
 
-    # woe_map = wbp.get_woe_map()
-    # print(woe_map)
+    # # woe_map = wbp.get_woe_map()
+    # # print(woe_map)
 
     print("IV:", wbp.get_iv_total())
 
