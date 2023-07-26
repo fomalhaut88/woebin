@@ -14,19 +14,24 @@ def build_src():
 
 
 def get_version():
+    version = None
+
     try:
         out, _ = sp.Popen(["cargo", "metadata"], stdout=sp.PIPE).communicate()
 
-    except FileNotFoundError:
-        return __import__(f"{PACKAGE_NAME}").__version__
-
-    else:
         metadata = json.loads(out.decode())
 
         for package in metadata['packages']:
             if package['name'] == PACKAGE_NAME:
                 version = package['version']
 
+    except:
+        pass
+
+    if version is None:
+        return __import__(f"{PACKAGE_NAME}").__version__
+
+    else:
         path_version_py = os.path.join(PACKAGE_NAME, 'version.py')
         with open(path_version_py, 'w') as f:
             print(f"__version__ = \"{version}\"", file=f)
